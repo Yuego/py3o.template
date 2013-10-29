@@ -1,0 +1,20 @@
+syntax: glob
+**/*.pyc
+*.swp
+.tmp*
+.coverage
+coverage.xml
+nosetests.xml
+example/py3o_example_output.odt
+*.egg-info
+dist/*
+build/*
+lib/*
+*.orig
+*.log
+.settings/*
+data/*
+storage/*
+.project
+.pydevproject
+*.db
