@@ -1,0 +1,11 @@
+<xml>
+    <mystruct>
+        <finishcontainer>
+        <sib1/>
+        <sib2/>
+        <end>
+            <endchild1/>
+        </end>
+        </finishcontainer>
+    </mystruct>
+</xml>
