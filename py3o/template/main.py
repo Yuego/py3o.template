@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 import lxml.etree
 import zipfile
 from io import BytesIO
@@ -134,6 +135,7 @@ class Template(object):
         self.__prepare_namespaces()
 
         self.images = {}
+        self.output_streams = []
 
     def __prepare_namespaces(self):
         """create proper namespaces for our document
@@ -479,7 +481,6 @@ class Template(object):
         self.__replace_image_links()
         self.__add_images_to_manifest()
 
-        self.output_streams = list()
         for fnum, content_tree in enumerate(self.content_trees):
             template = MarkupTemplate(
                 lxml.etree.tostring(content_tree.getroot())
@@ -582,7 +583,7 @@ class Template(object):
                 # write the full file to archive
                 out.write(streamout.name, fname)
 
-                # remove tempfile
+                # remove temp file
                 os.unlink(streamout.name)
 
             else:
