@@ -1,7 +1,9 @@
 # -*- encoding: utf-8 -*-
+import sys
 import decimal
 import logging
 import os
+import traceback
 
 import lxml.etree
 import zipfile
@@ -34,7 +36,7 @@ PY3O_IMAGE_PREFIX = 'Pictures/py3o-'
 
 class TemplateException(ValueError):
     """some client code is used to catching ValueErrors, let's keep the old
-    codebase hapy
+    codebase happy
     """
     def __init__(self, message):
         """define the __init__ to handle message... for python3's sake
@@ -95,6 +97,7 @@ def move_siblings(
     @type keep_end_boundary: bool
 
     @returns: None
+    @raises: ValueError
     """
     old_ = start.getparent()
     if keep_start_boundary:
@@ -277,7 +280,7 @@ class Template(object):
         """a public method to help report engines to introspect
         a template and find what data it needs and how it will be
         used
-        returns a list of user variable names without starting 'py3o.'"""
+        returns a list of user variable names without the leading 'py3o.'"""
         # TODO: Check if some user fields are stored in other content_trees
         return [
             e.get('{%s}name' % e.nsmap.get('text'))[5:]
@@ -419,8 +422,9 @@ class Template(object):
                 keep_start_boundary=keep_start_boundary,
                 keep_end_boundary=keep_end_boundary,
             )
-        except ValueError as e:
-            log.exception(e)
+        except ValueError:
+            excrepr = traceback.format_exc()
+            log.exception(excrepr)
             raise TemplateException("Could not move siblings for '%s'" %
                                     py3o_base)
 
