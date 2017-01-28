@@ -1128,7 +1128,15 @@ class Template(object):
         """
         out = zipfile.ZipFile(self.outputfilename, 'w', allowZip64=True)
 
-        for info_zip in self.infile.infolist():
+        # Manifest must be processed as late as possible
+        manifest_n = 'META-INF/manifest.xml'
+        infodict = dict((item.filename, item) for item in self.infile.infolist())
+        manifest_item = infodict.pop(manifest_n, None)
+        infolist = list(infodict.values())
+        if manifest_item:
+            infolist.append(manifest_item)
+
+        for info_zip in infolist:
 
             if info_zip.filename in self.templated_files:
                 # get a temp file
